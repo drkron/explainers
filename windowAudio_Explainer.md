@@ -121,5 +121,5 @@ navigator.mediaDevices.getDisplayMedia({
 
 ### Interoperability
 
-This feature aligns with the existing pattern of `getDisplayMedia()` options, where applications provide hints to user agents that maintain ultimate user control.
+This feature aligns with the existing pattern of `getDisplayMedia()` options, where applications provide hints to user agents that maintain ultimate user control. This approach should be readily adoptable by different browser engines.
 
