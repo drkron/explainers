@@ -129,22 +129,22 @@ navigator.mediaDevices.getDisplayMedia({
 ### Alternatives Considered
 
 * **Extending `SystemAudioPreferenceEnum`:** We considered extending the existing `systemAudio` option. However, this would overload its original purpose (which is for monitor captures) and create a less intuitive API. For instance, one possible implementation might look like this:
-```javascript
-navigator.mediaDevices.getDisplayMedia({
-  video: true,
-  audio: true,
-  systemAudio: "include_preferring_window"
-});
-```
-This approach muddies the water, making the option's name less descriptive and its behavior harder to reason about. Creating a separate `windowAudio` option provides a much clearer and more explicit API for developers.
+    ```javascript
+    navigator.mediaDevices.getDisplayMedia({
+      video: true,
+      audio: true,
+      systemAudio: "include_preferring_window"
+    });
+    ```
+    This approach muddies the water, making the option's name less descriptive and its behavior harder to reason about. Creating a separate `windowAudio` option provides a much clearer and more explicit API for developers.
 * **No Explicit Hint:** The alternative is to leave the behavior entirely up to the user agent.
-```javascript
-navigator.mediaDevices.getDisplayMedia({
-  video: true,
-  audio: true
-});
-```
-While user agents do their best to provide reasonable defaults, this would miss opportunities for web applications to improve the user experience by leveraging their greater context about the user's intent.
+    ```javascript
+    navigator.mediaDevices.getDisplayMedia({
+      video: true,
+      audio: true
+    });
+    ```
+    While user agents do their best to provide reasonable defaults, this would miss opportunities for web applications to improve the user experience by leveraging their greater context about the user's intent.
 
 ### Interoperability
 
