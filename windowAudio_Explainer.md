@@ -24,8 +24,20 @@ The `windowAudio` option aims to bridge this gap, enabling applications to expre
 
 ### Proposed Solution
 
-We propose adding a new option, `windowAudio`, of type `WindowAudioPreferenceEnum` to the `DisplayMediaStreamOptions` dictionary:
+We propose adding a new option, `windowAudio`, to the `DisplayMediaStreamOptions` dictionary. A developer would use it like this:
 
+```javascript
+// A simple example preferring window-specific audio
+const stream = await navigator.mediaDevices.getDisplayMedia({
+  video: true,
+  audio: true,
+  windowAudio: "window" // New option
+});
+```
+
+This option accepts a `WindowAudioPreferenceEnum` with the following possible values: `system`, `window`, or `exclude`.
+
+Formally, the new members would be defined in WebIDL as:
 ```webidl
 dictionary DisplayMediaStreamOptions {
   boolean video = false;
@@ -116,8 +128,23 @@ navigator.mediaDevices.getDisplayMedia({
 
 ### Alternatives Considered
 
-* **Extending `SystemAudioPreferenceEnum`:** Initially, one might consider extending `SystemAudioPreferenceEnum` to cover window captures. However, `SystemAudioPreferenceEnum` is specifically tied to monitor surfaces, where "system audio" is the primary distinction. For windows, the distinction between "window audio" and "system audio" becomes more nuanced and distinct, warranting a separate, dedicated option.
-* **No Explicit Hint:** The alternative is to leave the behavior entirely up to the user agent. While user agents do their best to provide reasonable defaults, this would miss opportunities for web applications to improve the user experience by leveraging their greater context about the user's intent.
+* **Extending `SystemAudioPreferenceEnum`:** We considered extending the existing `systemAudio` option. However, this would overload its original purpose (which is for monitor captures) and create a less intuitive API. For instance, one possible implementation might look like this:
+```javascript
+navigator.mediaDevices.getDisplayMedia({
+  video: true,
+  audio: true,
+  systemAudio: "include_preferring_window"
+});
+```
+This approach muddies the water, making the option's name less descriptive and its behavior harder to reason about. Creating a separate `windowAudio` option provides a much clearer and more explicit API for developers.
+* **No Explicit Hint:** The alternative is to leave the behavior entirely up to the user agent.
+```javascript
+navigator.mediaDevices.getDisplayMedia({
+  video: true,
+  audio: true
+});
+```
+While user agents do their best to provide reasonable defaults, this would miss opportunities for web applications to improve the user experience by leveraging their greater context about the user's intent.
 
 ### Interoperability
 
